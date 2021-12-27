@@ -15,12 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Index');
-});
+    return Inertia::render('Index',[
+        'auth'=>auth()->user()
+    ]);
+})->middleware('auth');
 Route::get('/tambah-transaksi', function () {
     return Inertia::render('AddTransactions');
-});
+})->middleware('auth');
 Route::get('/lihat-transaksi', function () {
     return Inertia::render('ShowTransactions');
-});
+})->middleware('auth');
 Auth::routes();

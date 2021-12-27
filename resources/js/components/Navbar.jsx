@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "@inertiajs/inertia-react";
+import { usePage } from "@inertiajs/inertia-react";
 
-const Navbar = ()=>{
+const Navbar = ({auth})=>{
+    // console.log(auth)
     return(
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
@@ -22,7 +24,7 @@ const Navbar = ()=>{
               </li>
               <li className="nav-item dropdown">
                 <Link className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Nama
+                  {auth.name}
                 </Link>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li><Link className="dropdown-item" href="#">Logout</Link></li>
