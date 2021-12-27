@@ -12,9 +12,12 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        return response()->json([
+            'message'=>'success',
+            'data'=>Transaction::where('user_id',$id)->get()
+        ],200);
     }
 
     /**
@@ -35,7 +38,32 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id'=>'required|number',
+            'product_name'=>'required|max:45',
+            'product_price'=>'required|number',
+            'product_amount'=>'required|number',
+            'total'=>'required|number'
+        ]);
+        try {
+            $transaction = Transaction::create([
+                'user_id'=>$request->user_id,
+                'product_name'=>$request->product_name,
+                'product_price'=>$request->product_price,
+                'product_amount'=>$request->product_amount,
+                'total'=>$request->total
+            ]);
+            return response()->json([
+                'message'=>'success',
+                'data'=>$transaction
+            ],201);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message'=>'failed',
+                'error'=>$th
+            ],400);
+        }
     }
 
     /**
@@ -69,7 +97,21 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        //
+        try {
+            $transaction->update([
+                'status'=>'process'
+            ]);
+            return response()->json([
+                'message'=>'success',
+                'data'=>Transaction::where('user_id',$request->user_id)->get()
+            ],200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message'=>'failed',
+                'error'=>$th
+            ],400);
+        }
     }
 
     /**

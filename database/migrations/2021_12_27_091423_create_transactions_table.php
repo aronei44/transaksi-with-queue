@@ -20,8 +20,10 @@ class CreateTransactionsTable extends Migration
             $table->string('product_price');
             $table->string('product_amount');
             $table->string('total');
-            $table->enum('status',['created','process'])->default('created');
+            $table->enum('status',['created','process','failed'])->default('created');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
         });
     }
 
