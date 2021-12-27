@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Transaction;
+use App\Jobs\TransactionJob;
 use Illuminate\Http\Request;
+use App\Http\Controllers\MailController;
 
 class TransactionController extends Controller
 {
@@ -53,12 +56,14 @@ class TransactionController extends Controller
                 'product_amount'=>$request->product_amount,
                 'total'=>$request->total
             ]);
+            MailController::addProduct($request->user_id);
+            dispatch(new TransactionJob($request->user_id))->delay(now()->addMinutes(1));
             return response()->json([
                 'message'=>'success',
                 'data'=>$transaction
             ],201);
         } catch (\Throwable $th) {
-            //throw $th;
+            return $th;
             return response()->json([
                 'message'=>'failed',
                 'error'=>$th
