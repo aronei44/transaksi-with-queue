@@ -18,6 +18,3 @@ use App\Http\Controllers\TransactionController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/transaction/{id}',[TransactionController::class,'index']);
-Route::post('/transaction',[TransactionController::class,'store']);
-Route::put('/transaction/{transaction}',[TransactionController::class,'update']);

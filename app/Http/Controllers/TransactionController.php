@@ -39,11 +39,11 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id'=>'required|number',
+            'user_id'=>'required|numeric',
             'product_name'=>'required|max:45',
-            'product_price'=>'required|number',
-            'product_amount'=>'required|number',
-            'total'=>'required|number'
+            'product_price'=>'required|numeric',
+            'product_amount'=>'required|numeric',
+            'total'=>'required|numeric'
         ]);
         try {
             $transaction = Transaction::create([
