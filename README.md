@@ -37,4 +37,6 @@ lalu batalkan proses setelah selesai
 
 > composer upgrade
 
-npm run watch
+> npm run watch
+
+Jangan lupa siapkan email tumbal ya..... isi di env
