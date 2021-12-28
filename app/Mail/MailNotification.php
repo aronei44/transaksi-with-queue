@@ -34,6 +34,8 @@ class MailNotification extends Mailable
             return $this->subject('Transaction')->view('mail.addProduct');
         }else if($this->view == 'invoice'){
             return $this->subject('Transaction')->view('mail.invoice');
+        }else if($this->view == 'paid'){
+            return $this->subject('Transaction')->view('mail.paid');
         }
     }
 }

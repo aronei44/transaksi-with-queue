@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Bus\Queueable;
 use App\Mail\MailNotification;
 use Illuminate\Support\Facades\Mail;
@@ -23,9 +24,9 @@ class TransactionJob implements ShouldQueue
      * @return void
      */
     public $transaction,$id;
-    public function __construct($id)
+    public function __construct($id,$transaction)
     {
-        // $this->transaction = $transaction;
+        $this->transaction = $transaction;
         $this->id = $id;
     }
 
@@ -37,8 +38,14 @@ class TransactionJob implements ShouldQueue
     public function handle()
     {
         // MailController::invoice($this->id);
-        $email = User::find($this->id)->email;
-        Mail::to($email)->send(new MailNotification('invoice',$email));
-        return 'email sended';
+        $transaction = Transaction::find($this->transaction);
+        if($transaction->status == 'created'){
+            Transaction::find($this->transaction)->update([
+                'status'=>'failed'
+            ]);
+            $email = User::find($this->id)->email;
+            Mail::to($email)->send(new MailNotification('invoice',$email));
+            return 'email sended';
+        }
     }
 }

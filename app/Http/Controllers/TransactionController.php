@@ -57,7 +57,7 @@ class TransactionController extends Controller
                 'total'=>$request->total
             ]);
             MailController::addProduct($request->user_id);
-            dispatch(new TransactionJob($request->user_id))->delay(now()->addMinutes(1));
+            dispatch(new TransactionJob($request->user_id, $transaction->id))->delay(now()->addMinutes(60));
             return response()->json([
                 'message'=>'success',
                 'data'=>$transaction
@@ -106,6 +106,7 @@ class TransactionController extends Controller
             $transaction->update([
                 'status'=>'process'
             ]);
+            MailController::paid($request->user_id);
             return response()->json([
                 'message'=>'success',
                 'data'=>Transaction::where('user_id',$request->user_id)->get()

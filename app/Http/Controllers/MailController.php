@@ -24,4 +24,9 @@ class MailController extends Controller
         Mail::to($email)->send(new MailNotification('invoice',$email));
         return 'email sended';
     }
+    public static function paid($id){
+        $email = User::find($id)->email;
+        Mail::to($email)->send(new MailNotification('paid',$email));
+        return 'email sended';
+    }
 }
