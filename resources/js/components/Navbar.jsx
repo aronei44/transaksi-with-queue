@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "@inertiajs/inertia-react";
 import { usePage } from "@inertiajs/inertia-react";
+import { Inertia } from "@inertiajs/inertia";
 
 const Navbar = ({auth})=>{
     // console.log(auth)
+    const {csrf} = usePage().props
     return(
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
@@ -27,7 +29,10 @@ const Navbar = ({auth})=>{
                   {auth.name}
                 </Link>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><Link className="dropdown-item" href="#">Logout</Link></li>
+                  <li><button className="dropdown-item" onClick={()=>{
+                    Inertia.post('logout',{_token:csrf})
+                    window.location.href = '/login'
+                  }}>Logout</button></li>
                 </ul>
               </li>
             </ul>
